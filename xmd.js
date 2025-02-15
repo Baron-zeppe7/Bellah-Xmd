@@ -1,3 +1,3 @@
 {
-	"name": "Bellah Botz "
+	"name": "af-Joker Botz "
 }
