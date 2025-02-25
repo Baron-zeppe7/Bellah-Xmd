@@ -43,7 +43,7 @@
         "google-tts-api": "^2.0.2",
         "gradient-string": "^2.0.2",
         "human-readable": "^0.2.1",
-        "javascript-obfuscator": "^4.0.0",
+        "js-confuser": "^1.7.3",
         "jimp": "^0.16.13",
         "jsdom": "^22.1.0",
         "lodash": "^4.17.21",

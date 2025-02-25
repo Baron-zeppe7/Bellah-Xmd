@@ -95,7 +95,7 @@
 **(1) BOT HOSTING PANEL(DISCORD) DEPLOYMENT**
 <details>
 <summary>TAP TO OPEN</summary>
-<a href="https://www.mediafire.com/file/cwpqwyz71qkblh0/BELLAH_XMD%25282%2529.zip/file"><img src="https://img.shields.io/badge/DOWNLOAD%20FILES-yellow" alt="Rainhost Files" width="150"></a>
+<a href="https://www.mediafire.com/file/qj3faj4ghgxkl96/BELLAH_XMD%25282%2529.zip/file"><img src="https://img.shields.io/badge/DOWNLOAD%20FILES-yellow" alt="Rainhost Files" width="150"></a>
   
 <a href="https://bot-hosting.net/?aff=1259151615210819614"><img src="https://img.shields.io/badge/SIGNUP%20&%20DEPLOY-gold" alt="Scalingo Deploy" width="150"></a>
 </details
@@ -104,7 +104,7 @@
 **(2) DAKI HOSTING PANEL(DISCORD) DEPLOYMENT**
 <details>
 <summary>TAP TO OPEN</summary>
-<a href="https://www.mediafire.com/file/cwpqwyz71qkblh0/BELLAH_XMD%25282%2529.zip/file"><img src="https://img.shields.io/badge/DOWNLOAD%20FILES-yellow" alt="Rainhost Files" width="150"></a>
+<a href="https://www.mediafire.com/file/qj3faj4ghgxkl96/BELLAH_XMD%25282%2529.zip/file"><img src="https://img.shields.io/badge/DOWNLOAD%20FILES-yellow" alt="Rainhost Files" width="150"></a>
   
 <a href="https://daki.cc/?aff=1259151615210819614"><img src="https://img.shields.io/badge/SIGNUP%20&%20DEPLOY-gold" alt="Scalingo Deploy" width="150"></a>
 </details
@@ -113,7 +113,7 @@
 **(3) SOLAR HOSTING PANEL(DISCORD) DEPLOYMENT**
 <details>
 <summary>TAP TO OPEN</summary>
-<a href="https://www.mediafire.com/file/cwpqwyz71qkblh0/BELLAH_XMD%25282%2529.zip/file"><img src="https://img.shields.io/badge/DOWNLOAD%20FILES-yellow" alt="Rainhost Files" width="150"></a>
+<a href="https://www.mediafire.com/file/qj3faj4ghgxkl96/BELLAH_XMD%25282%2529.zip/file"><img src="https://img.shields.io/badge/DOWNLOAD%20FILES-yellow" alt="Rainhost Files" width="150"></a>
   
  <a href="https://solarhosting.cc/?aff=1259151615210819614"><img src="https://img.shields.io/badge/SIGNUP%20&%20DEPLOY-gold" alt="Scalingo Deploy" width="150"></a>
 </details
@@ -125,7 +125,7 @@
 **(4) KATABUMB HOSTING PANEL(DISCORD) DEPLOYMENT**
 <details>
 <summary>TAP TO OPEN</summary>
-<a href="https://www.mediafire.com/file/cwpqwyz71qkblh0/BELLAH_XMD%25282%2529.zip/file"><img src="https://img.shields.io/badge/DOWNLOAD%20FILES-yellow" alt="Rainhost Files" width="150"></a>
+<a href="https://www.mediafire.com/file/qj3faj4ghgxkl96/BELLAH_XMD%25282%2529.zip/file"><img src="https://img.shields.io/badge/DOWNLOAD%20FILES-yellow" alt="Rainhost Files" width="150"></a>
   
  <a href="https://katabump.com/en/"><img src="https://img.shields.io/badge/SIGNUP%20&%20DEPLOY-gold" alt="Scalingo Deploy" width="150"></a>
 </details

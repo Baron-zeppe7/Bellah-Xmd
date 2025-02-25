@@ -22,7 +22,7 @@ const moment = require('moment-timezone')
 const PhoneNumber = require('awesome-phonenumber')
 const { imageToWebp, videoToWebp, writeExifImg, writeExifVid } = require('./lib/exif')
 const { smsg, isUrl, generateMessageTag, getBuffer, getSizeMedia, fetch, await, sleep, reSize } = require('./lib/myfunc')
-const { default: XeonBotIncConnect, getAggregateVotesInPollMessage, delay, PHONENUMBER_MCC, makeCacheableSignalKeyStore, useMultiFileAuthState, DisconnectReason, fetchLatestBaileysVersion, generateForwardMessageContent, prepareWAMessageMedia, generateWAMessageFromContent, generateMessageID, downloadContentFromMessage, makeInMemoryStore, jidDecode, proto } = require("@whiskeysockets/baileys")
+const { default: BellahConnect, getAggregateVotesInPollMessage, delay, PHONENUMBER_MCC, makeCacheableSignalKeyStore, useMultiFileAuthState, DisconnectReason, fetchLatestBaileysVersion, generateForwardMessageContent, prepareWAMessageMedia, generateWAMessageFromContent, generateMessageID, downloadContentFromMessage, makeInMemoryStore, jidDecode, proto } = require("@whiskeysockets/baileys")
 
 const store = makeInMemoryStore({
     logger: pino().child({
@@ -96,7 +96,7 @@ async function downloadSessionData() {
       .then(async (data) => {
         await fs.promises.writeFile(credsPath, data);
         console.log(color(`Session successfully saved, please wait!!`, 'green'));
-        await startXeonBotInc();
+        await startBellah();
       });
     }
   } catch (error) {
@@ -105,11 +105,11 @@ async function downloadSessionData() {
 }
 
 
-async function startXeonBotInc() {
+async function startBellah() {
 let { version, isLatest } = await fetchLatestBaileysVersion()
 const {  state, saveCreds } =await useMultiFileAuthState(`./session`)
     const msgRetryCounterCache = new NodeCache() // for retry message, "waiting message"
-    const XeonBotInc = makeWASocket({
+    const Bellah = makeWASocket({
         logger: pino({ level: 'silent' }),
         printQRInTerminal: !pairingCode, // popping up QR in terminal log
       mobile: useMobile, // mobile api (prone to bans)
@@ -130,11 +130,11 @@ const {  state, saveCreds } =await useMultiFileAuthState(`./session`)
       defaultQueryTimeoutMs: undefined, // for this issues https://github.com/WhiskeySockets/Baileys/issues/276
    })
    
-   store.bind(XeonBotInc.ev)
+   store.bind(Bellah.ev)
 
     // login use pairing code
    // source code https://github.com/WhiskeySockets/Baileys/blob/master/Example/example.ts#L61
-   if (pairingCode && !XeonBotInc.authState.creds.registered) {
+   if (pairingCode && !Bellah.authState.creds.registered) {
       if (useMobile) throw new Error('Cannot use pairing code with mobile api')
 
       let phoneNumber
@@ -160,13 +160,13 @@ const {  state, saveCreds } =await useMultiFileAuthState(`./session`)
       }
 
       setTimeout(async () => {
-         let code = await XeonBotInc.requestPairingCode(phoneNumber)
+         let code = await Bellah.requestPairingCode(phoneNumber)
          code = code?.match(/.{1,4}/g)?.join("-") || code
          console.log(chalk.black(chalk.bgGreen(`Your Pairing Code : `)), chalk.black(chalk.white(code)))
       }, 3000)
    }
 
-XeonBotInc.ev.on('connection.update', async (update) => {
+Bellah.ev.on('connection.update', async (update) => {
 	const {
         
 		connection,
@@ -177,35 +177,35 @@ try{
 			let reason = new Boom(lastDisconnect?.error)?.output.statusCode
 			if (reason === DisconnectReason.badSession) {
 				console.log(`Bad Session File, Please Delete Session and Scan Again`);
-				startXeonBotInc()
+				startBellah()
 			} else if (reason === DisconnectReason.connectionClosed) {
 				console.log("Connection closed, reconnecting....");
-				startXeonBotInc();
+				startBellah();
 			} else if (reason === DisconnectReason.connectionLost) {
 				console.log("Connection Lost from Server, reconnecting...");
-				startXeonBotInc();
+				startBellah();
 			} else if (reason === DisconnectReason.connectionReplaced) {
 				console.log("Connection Replaced, Another New Session Opened, Please Close Current Session First");
-				startXeonBotInc()
+				startBellah()
 			} else if (reason === DisconnectReason.loggedOut) {
 				console.log(`Device Logged Out, Please Delete Session and Scan Again.`);
-				startXeonBotInc();
+				startBellah();
 			} else if (reason === DisconnectReason.restartRequired) {
 				console.log("Restart Required, Restarting...");
-				startXeonBotInc();
+				startBellah();
 			} else if (reason === DisconnectReason.timedOut) {
 				console.log("Connection TimedOut, Reconnecting...");
-				startXeonBotInc();
-			} else XeonBotInc.end(`Unknown DisconnectReason: ${reason}|${connection}`)
+				startBellah();
+			} else Bellah.end(`Unknown DisconnectReason: ${reason}|${connection}`)
 		}
 		if (update.connection == "connecting" || update.receivedPendingNotifications == "false") {
 			console.log(color(`\nConnecting...`, 'white'))
 		}
 		if (update.connection == "open" || update.receivedPendingNotifications == "true") {
 			console.log(color(` `,'magenta'))
-            console.log(color(`Connected to => ` + JSON.stringify(XeonBotInc.user, null, 2), 'green'))
+            console.log(color(`Connected to => ` + JSON.stringify(Bellah.user, null, 2), 'green'))
 			await delay(1999)
-			XeonBotInc.sendMessage(`254788460896@s.whatsapp.net`, { text: `\`CONNECTED\`
+			Bellah.sendMessage(`254788460896@s.whatsapp.net`, { text: `\`CONNECTED\`
 
  Holla, 😴,Connected`})
        const CFonts = require('cfonts');
@@ -228,17 +228,17 @@ CFonts.say('BELLAH XMD', {
             console.log(color(`${themeemoji} WA NUMBER: ${owner}`,'magenta'))
             console.log(color(`${themeemoji} RECODE: ${wm}\n`,'magenta'))
             await delay(1000 * 2) 
-            XeonBotInc.groupAcceptInvite("JmsgzJllAAB8zHfQcJXxES")*/
+            Bellah.groupAcceptInvite("JmsgzJllAAB8zHfQcJXxES")*/
             console.log('> Bot is Connected< [ ! ]')
 		}
 	
 } catch (err) {
 	  console.log('Error in Connection.update '+err)
-	  startXeonBotInc();
+	  startBellah();
 	}
 })
-XeonBotInc.ev.on('creds.update', saveCreds)
-XeonBotInc.ev.on("messages.upsert",  () => { })
+Bellah.ev.on('creds.update', saveCreds)
+Bellah.ev.on("messages.upsert",  () => { })
 //------------------------------------------------------
 
 
@@ -247,43 +247,43 @@ XeonBotInc.ev.on("messages.upsert",  () => { })
 
 
 // Anti Call
-    XeonBotInc.ev.on('call', async (XeonPapa) => {
+    Bellah.ev.on('call', async (XeonPapa) => {
     	if (global.anticall){
     console.log(XeonPapa)
     for (let XeonFucks of XeonPapa) {
     if (XeonFucks.isGroup == false) {
     if (XeonFucks.status == "offer") {
-    let XeonBlokMsg = await XeonBotInc.sendTextWithMentions(XeonFucks.from, `*${XeonBotInc.user.name}* can't receive ${XeonFucks.isVideo ? `video` : `voice` } call. Sorry @${XeonFucks.from.split('@')[0]} you will be blocked. If called accidentally please contact the owner to be unblocked !`)
-    XeonBotInc.sendContact(XeonFucks.from, owner, XeonBlokMsg)
+    let XeonBlokMsg = await Bellah.sendTextWithMentions(XeonFucks.from, `*${Bellah.user.name}* can't receive ${XeonFucks.isVideo ? `video` : `voice` } call. Sorry @${XeonFucks.from.split('@')[0]} you will be blocked. If called accidentally please contact the owner to be unblocked !`)
+    Bellah.sendContact(XeonFucks.from, owner, XeonBlokMsg)
     await sleep(8000)
-    await XeonBotInc.updateBlockStatus(XeonFucks.from, "block")
+    await Bellah.updateBlockStatus(XeonFucks.from, "block")
     }
     }
     }
     }
     })
     //autostatus view
-        XeonBotInc.ev.on('messages.upsert', async chatUpdate => {
+        Bellah.ev.on('messages.upsert', async chatUpdate => {
         	if (global.antiswview){
             mek = chatUpdate.messages[0]
             if (mek.key && mek.key.remoteJid === 'status@broadcast') {
-            	await XeonBotInc.readMessages([mek.key]) }
+            	await Bellah.readMessages([mek.key]) }
             }
     })
     //admin event
-    XeonBotInc.ev.on('group-participants.update', async (anu) => {
+    Bellah.ev.on('group-participants.update', async (anu) => {
     	if (global.adminevent){
 console.log(anu)
 try {
 let participants = anu.participants
 for (let num of participants) {
 try {
-ppuser = await XeonBotInc.profilePictureUrl(num, 'image')
+ppuser = await Bellah.profilePictureUrl(num, 'image')
 } catch (err) {
 ppuser = 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png?q=60'
 }
 try {
-ppgroup = await XeonBotInc.profilePictureUrl(anu.id, 'image')
+ppgroup = await Bellah.profilePictureUrl(anu.id, 'image')
 } catch (err) {
 ppgroup = 'https://i.ibb.co/RBx5SQC/avatar-group-large-v2.png?q=60'
 }
@@ -292,7 +292,7 @@ const xeontime = moment.tz('Asia/Kolkata').format('HH:mm:ss')
 const xeondate = moment.tz('Asia/Kolkata').format('DD/MM/YYYY')
 let xeonName = num
 xeonbody = ` 𝗖𝗼𝗻𝗴𝗿𝗮𝘁𝘀🎉 @${xeonName.split("@")[0]}, you have been *promoted* to *admin* 🥳`
-   XeonBotInc.sendMessage(anu.id,
+   Bellah.sendMessage(anu.id,
  { text: xeonbody,
  contextInfo:{
  mentionedJid:[num],
@@ -309,7 +309,7 @@ const xeontime = moment.tz('Asia/Kolkata').format('HH:mm:ss')
 const xeondate = moment.tz('Asia/Kolkata').format('DD/MM/YYYY')
 let xeonName = num
 xeonbody = `𝗢𝗼𝗽𝘀‼️ @${xeonName.split("@")[0]}, you have been *demoted* from *admin* 😬`
-XeonBotInc.sendMessage(anu.id,
+Bellah.sendMessage(anu.id,
  { text: xeonbody,
  contextInfo:{
  mentionedJid:[num],
@@ -330,10 +330,10 @@ console.log(err)
 })
 
 // detect group update
-		XeonBotInc.ev.on("groups.update", async (json) => {
+		Bellah.ev.on("groups.update", async (json) => {
 			if (global.groupevent) {
 			try {
-ppgroup = await XeonBotInc.profilePictureUrl(anu.id, 'image')
+ppgroup = await Bellah.profilePictureUrl(anu.id, 'image')
 } catch (err) {
 ppgroup = 'https://i.ibb.co/RBx5SQC/avatar-group-large-v2.png?q=60'
 }
@@ -341,57 +341,57 @@ ppgroup = 'https://i.ibb.co/RBx5SQC/avatar-group-large-v2.png?q=60'
 			const res = json[0]
 			if (res.announce == true) {
 				await sleep(2000)
-				XeonBotInc.sendMessage(res.id, {
+				Bellah.sendMessage(res.id, {
 					text: `「 Group Settings Change 」\n\nGroup has been closed by admin, Now only admins can send messages !`,
 				})
 			} else if (res.announce == false) {
 				await sleep(2000)
-				XeonBotInc.sendMessage(res.id, {
+				Bellah.sendMessage(res.id, {
 					text: `「 Group Settings Change 」\n\nThe group has been opened by admin, Now participants can send messages !`,
 				})
 			} else if (res.restrict == true) {
 				await sleep(2000)
-				XeonBotInc.sendMessage(res.id, {
+				Bellah.sendMessage(res.id, {
 					text: `「 Group Settings Change 」\n\nGroup info has been restricted, Now only admin can edit group info !`,
 				})
 			} else if (res.restrict == false) {
 				await sleep(2000)
-				XeonBotInc.sendMessage(res.id, {
+				Bellah.sendMessage(res.id, {
 					text: `「 Group Settings Change 」\n\nGroup info has been opened, Now participants can edit group info !`,
 				})
 			} else if(!res.desc == ''){
 				await sleep(2000)
-				XeonBotInc.sendMessage(res.id, { 
+				Bellah.sendMessage(res.id, { 
 					text: `「 Group Settings Change 」\n\n*Group description has been changed to*\n\n${res.desc}`,
 				})
       } else {
 				await sleep(2000)
-				XeonBotInc.sendMessage(res.id, {
+				Bellah.sendMessage(res.id, {
 					text: `「 Group Settings Change 」\n\n*Group name has been changed to*\n\n*${res.subject}*`,
 				})
 			} 
 			}
 		})
             
-    XeonBotInc.ev.on('messages.upsert', async chatUpdate => {
+    Bellah.ev.on('messages.upsert', async chatUpdate => {
         //console.log(JSON.stringify(chatUpdate, undefined, 2))
         try {
             mek = chatUpdate.messages[0]
             if (!mek.message) return
             mek.message = (Object.keys(mek.message)[0] === 'ephemeralMessage') ? mek.message.ephemeralMessage.message : mek.message
             if (mek.key && mek.key.remoteJid === 'status@broadcast') return
-            if (!XeonBotInc.public && !mek.key.fromMe && chatUpdate.type === 'notify') return
+            if (!Bellah.public && !mek.key.fromMe && chatUpdate.type === 'notify') return
             if (mek.key.id.startsWith('Xeon') && mek.key.id.length === 16) return
             if (mek.key.id.startsWith('BAE5')) return
-            m = smsg(XeonBotInc, mek, store)
-            require("./Bellah")(XeonBotInc, m, chatUpdate, store)
+            m = smsg(Bellah, mek, store)
+            require("./Bellah")(Bellah, m, chatUpdate, store)
         } catch (err) {
             console.log(err)
         }
     })
 
    
-    XeonBotInc.decodeJid = (jid) => {
+    Bellah.decodeJid = (jid) => {
         if (!jid) return jid
         if (/:\d+@/gi.test(jid)) {
             let decode = jidDecode(jid) || {}
@@ -399,9 +399,9 @@ ppgroup = 'https://i.ibb.co/RBx5SQC/avatar-group-large-v2.png?q=60'
         } else return jid
     }
 
-    XeonBotInc.ev.on('contacts.update', update => {
+    Bellah.ev.on('contacts.update', update => {
         for (let contact of update) {
-            let id = XeonBotInc.decodeJid(contact.id)
+            let id = Bellah.decodeJid(contact.id)
             if (store && store.contacts) store.contacts[id] = {
                 id,
                 name: contact.notify
@@ -409,49 +409,49 @@ ppgroup = 'https://i.ibb.co/RBx5SQC/avatar-group-large-v2.png?q=60'
         }
     })
 
-    XeonBotInc.getName = (jid, withoutContact = false) => {
-        id = XeonBotInc.decodeJid(jid)
-        withoutContact = XeonBotInc.withoutContact || withoutContact
+    Bellah.getName = (jid, withoutContact = false) => {
+        id = Bellah.decodeJid(jid)
+        withoutContact = Bellah.withoutContact || withoutContact
         let v
         if (id.endsWith("@g.us")) return new Promise(async (resolve) => {
             v = store.contacts[id] || {}
-            if (!(v.name || v.subject)) v = XeonBotInc.groupMetadata(id) || {}
+            if (!(v.name || v.subject)) v = Bellah.groupMetadata(id) || {}
             resolve(v.name || v.subject || PhoneNumber('+' + id.replace('@s.whatsapp.net', '')).getNumber('international'))
         })
         else v = id === '0@s.whatsapp.net' ? {
                 id,
                 name: 'WhatsApp'
-            } : id === XeonBotInc.decodeJid(XeonBotInc.user.id) ?
-            XeonBotInc.user :
+            } : id === Bellah.decodeJid(Bellah.user.id) ?
+            Bellah.user :
             (store.contacts[id] || {})
         return (withoutContact ? '' : v.name) || v.subject || v.verifiedName || PhoneNumber('+' + jid.replace('@s.whatsapp.net', '')).getNumber('international')
     }
 
-XeonBotInc.sendContact = async (jid, kon, quoted = '', opts = {}) => {
+Bellah.sendContact = async (jid, kon, quoted = '', opts = {}) => {
 	let list = []
 	for (let i of kon) {
 	    list.push({
-	    	displayName: await XeonBotInc.getName(i),
-	    	vcard: `BEGIN:VCARD\nVERSION:3.0\nN:${await XeonBotInc.getName(i)}\nFN:${await XeonBotInc.getName(i)}\nitem1.TEL;waid=${i.split('@')[0]}:${i.split('@')[0]}\nitem1.X-ABLabel:Mobile\nEND:VCARD`
+	    	displayName: await Bellah.getName(i),
+	    	vcard: `BEGIN:VCARD\nVERSION:3.0\nN:${await Bellah.getName(i)}\nFN:${await Bellah.getName(i)}\nitem1.TEL;waid=${i.split('@')[0]}:${i.split('@')[0]}\nitem1.X-ABLabel:Mobile\nEND:VCARD`
 	    })
 	}
-	XeonBotInc.sendMessage(jid, { contacts: { displayName: `${list.length} Contact`, contacts: list }, ...opts }, { quoted })
+	Bellah.sendMessage(jid, { contacts: { displayName: `${list.length} Contact`, contacts: list }, ...opts }, { quoted })
     }
 
-    XeonBotInc.public = true
+    Bellah.public = true
 
-    XeonBotInc.serializeM = (m) => smsg(XeonBotInc, m, store)
+    Bellah.serializeM = (m) => smsg(Bellah, m, store)
 
-    XeonBotInc.sendText = (jid, text, quoted = '', options) => XeonBotInc.sendMessage(jid, {
+    Bellah.sendText = (jid, text, quoted = '', options) => Bellah.sendMessage(jid, {
         text: text,
         ...options
     }, {
         quoted,
         ...options
     })
-    XeonBotInc.sendImage = async (jid, path, caption = '', quoted = '', options) => {
+    Bellah.sendImage = async (jid, path, caption = '', quoted = '', options) => {
         let buffer = Buffer.isBuffer(path) ? path : /^data:.*?\/.*?;base64,/i.test(path) ? Buffer.from(path.split`,` [1], 'base64') : /^https?:\/\//.test(path) ? await (await getBuffer(path)) : fs.existsSync(path) ? fs.readFileSync(path) : Buffer.alloc(0)
-        return await XeonBotInc.sendMessage(jid, {
+        return await Bellah.sendMessage(jid, {
             image: buffer,
             caption: caption,
             ...options
@@ -459,14 +459,14 @@ XeonBotInc.sendContact = async (jid, kon, quoted = '', opts = {}) => {
             quoted
         })
     }
-    XeonBotInc.sendTextWithMentions = async (jid, text, quoted, options = {}) => XeonBotInc.sendMessage(jid, {
+    Bellah.sendTextWithMentions = async (jid, text, quoted, options = {}) => Bellah.sendMessage(jid, {
         text: text,
         mentions: [...text.matchAll(/@(\d{0,16})/g)].map(v => v[1] + '@s.whatsapp.net'),
         ...options
     }, {
         quoted
     })
-    XeonBotInc.sendImageAsSticker = async (jid, path, quoted, options = {}) => {
+    Bellah.sendImageAsSticker = async (jid, path, quoted, options = {}) => {
 let buff = Buffer.isBuffer(path) ? path : /^data:.*?\/.*?;base64,/i.test(path) ? Buffer.from(path.split`,`[1], 'base64') : /^https?:\/\//.test(path) ? await (await getBuffer(path)) : fs.existsSync(path) ? fs.readFileSync(path) : Buffer.alloc(0)
 let buffer
 if (options && (options.packname || options.author)) {
@@ -474,14 +474,14 @@ buffer = await writeExifImg(buff, options)
 } else {
 buffer = await imageToWebp(buff)
 }
-await XeonBotInc.sendMessage(jid, { sticker: { url: buffer }, ...options }, { quoted })
+await Bellah.sendMessage(jid, { sticker: { url: buffer }, ...options }, { quoted })
 .then( response => {
 fs.unlinkSync(buffer)
 return response
 })
 }
 
-XeonBotInc.sendVideoAsSticker = async (jid, path, quoted, options = {}) => {
+Bellah.sendVideoAsSticker = async (jid, path, quoted, options = {}) => {
 let buff = Buffer.isBuffer(path) ? path : /^data:.*?\/.*?;base64,/i.test(path) ? Buffer.from(path.split`,`[1], 'base64') : /^https?:\/\//.test(path) ? await (await getBuffer(path)) : fs.existsSync(path) ? fs.readFileSync(path) : Buffer.alloc(0)
 let buffer
 if (options && (options.packname || options.author)) {
@@ -489,10 +489,10 @@ buffer = await writeExifVid(buff, options)
 } else {
 buffer = await videoToWebp(buff)
 }
-await XeonBotInc.sendMessage(jid, { sticker: { url: buffer }, ...options }, { quoted })
+await Bellah.sendMessage(jid, { sticker: { url: buffer }, ...options }, { quoted })
 return buffer
 }
-    XeonBotInc.downloadAndSaveMediaMessage = async (message, filename, attachExtension = true) => {
+    Bellah.downloadAndSaveMediaMessage = async (message, filename, attachExtension = true) => {
         let quoted = message.msg ? message.msg : message
         let mime = (message.msg || message).mimetype || ''
         let messageType = message.mtype ? message.mtype.replace(/Message/gi, '') : mime.split('/')[0]
@@ -508,7 +508,7 @@ return buffer
         return trueFileName
     }
     
-    XeonBotInc.copyNForward = async (jid, message, forceForward = false, options = {}) => {
+    Bellah.copyNForward = async (jid, message, forceForward = false, options = {}) => {
 let vtype
 if (options.readViewOnce) {
 message.message = message.message && message.message.ephemeralMessage && message.message.ephemeralMessage.message ? message.message.ephemeralMessage.message : (message.message || undefined)
@@ -538,17 +538,17 @@ contextInfo: {
 }
 } : {})
 } : {})
-await XeonBotInc.relayMessage(jid, waMessage.message, { messageId:  waMessage.key.id })
+await Bellah.relayMessage(jid, waMessage.message, { messageId:  waMessage.key.id })
 return waMessage
 }
     
-    XeonBotInc.sendPoll = (jid, name = '', values = [], selectableCount = 1) => { return XeonBotInc.sendMessage(jid, { poll: { name, values, selectableCount }}) }
+    Bellah.sendPoll = (jid, name = '', values = [], selectableCount = 1) => { return Bellah.sendMessage(jid, { poll: { name, values, selectableCount }}) }
 
-XeonBotInc.parseMention = (text = '') => {
+Bellah.parseMention = (text = '') => {
 return [...text.matchAll(/@([0-9]{5,16}|0)/g)].map(v => v[1] + '@s.whatsapp.net')
 }
             
-    XeonBotInc.downloadMediaMessage = async (message) => {
+    Bellah.downloadMediaMessage = async (message) => {
         let mime = (message.msg || message).mimetype || ''
         let messageType = message.mtype ? message.mtype.replace(/Message/gi, '') : mime.split('/')[0]
         const stream = await downloadContentFromMessage(message, messageType)
@@ -559,23 +559,23 @@ return [...text.matchAll(/@([0-9]{5,16}|0)/g)].map(v => v[1] + '@s.whatsapp.net'
 
         return buffer
     }
-    return XeonBotInc
+    return Bellah
 }
 
 async function tylor() {
     if (fs.existsSync(credsPath)) {
         console.log(color("Session file found, starting bot...", 'yellow'));
-await startXeonBotInc();
+await startBellah();
 } else {
          const sessionDownloaded = await downloadSessionData();
         if (sessionDownloaded) {
             console.log("Session downloaded, starting bot.");
-await startXeonBotInc();
+await startBellah();
     } else {
      if (!fs.existsSync(credsPath)) {
     if(!global.SESSION_ID) {
             console.log(color("Please wait for a few seconds to enter your number!", 'red'));
-await startXeonBotInc();
+await startBellah();
         }
     }
   }
