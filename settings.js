@@ -15,16 +15,16 @@ global.socialm = "IG: @GIDDYTENNOR" //ur github or insta name
 global.location = "Kenya" //ur location
 
 //new
-global.botname = process.env.BOT_NAME ||'𝐁𝐞𝐥𝐥𝐚𝐡 𝐗𝐦𝐝' //enter your  bot name here
+global.botname = process.env.BOT_NAME ||'𝔸𝔽 𝐉𝐨𝐤𝐞𝐫 𝐗𝐦𝐝' //enter your  bot name here
 global.ownernumber = process.env.OWNER_NUMBER ||'237693132795' //ur owner number
-global.ownername = '© TENNOMODZ' //ur owner name
-global.websitex = "https://whatsapp.com/channel/0029VaPZWbY1iUxVVRIIOm0D" //"https://chat.whatsapp.com/JmsgzJllAAB8zHfQcJXxES"
+global.ownername = '© 𝔸𝔽 𝐉𝐨𝐤𝐞𝐫' //ur owner name
+global.websitex = "https://whatsapp.com/channel/0029VayFtciCHDyjtO48mw2q" //"https://chat.whatsapp.com/JmsgzJllAAB8zHfQcJXxES"
 global.wagc = "https://chat.whatsapp.com/CzFlFQrkdzxFw0pxCBYM7H" //"https://chat.whatsapp.com/JmsgzJllAAB8zHfQcJXxES"
 global.themeemoji = '🪀'
-global.wm = "GIDDY TENNOR"
-global.botscript = 'https://whatsapp.com/channel/0029VaPZWbY1iUxVVRIIOm0D' //'https://chat.whatsapp.com/JmsgzJllAAB8zHfQcJXxES' //script link
-global.packname = process.env.PACK_NAME ||"VolTah Xmd" //enter your stickers author name here
-global.author = "Giddy-Tennor"
+global.wm = "AF JOKER"
+global.botscript = 'https://whatsapp.com/channel/0029VayFtciCHDyjtO48mw2q' //'https://chat.whatsapp.com/JmsgzJllAAB8zHfQcJXxES' //script link
+global.packname = process.env.PACK_NAME ||"𝔸𝔽 𝐉𝐨𝐤𝐞𝐫 Xmd" //enter your stickers author name here
+global.author = "AF-JOKER"
 global.creator = "237693132795@s.whatsapp.net"
 global.xprefix = process.env.BOT_PREFIX ||'.'
 global.hituet = 0
